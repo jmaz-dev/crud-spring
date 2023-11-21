@@ -57,11 +57,14 @@ public class CoursesController {
 
     @DeleteMapping("delete/{id}")
     // @ResponseStatus(code = HttpStatus.OK)
-    public ResponseEntity<HttpStatus> delete(@PathVariable("id") Integer id) {
+    public ResponseEntity<Object> delete(@PathVariable("id") Integer id) {
 
-        courseRepository.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-
+        return courseRepository.findById(id)
+                .map(recordFound -> {
+                    courseRepository.deleteById(recordFound.getId());
+                    return ResponseEntity.noContent().build();
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("edit/{id}")
@@ -70,7 +73,8 @@ public class CoursesController {
                 .map(recordFound -> {
                     recordFound.setCategory(courseBody.getCategory());
                     recordFound.setName(courseBody.getName());
-                    return ResponseEntity.ok().body(courseRepository.save(recordFound));
+                    Course updated = courseRepository.save(recordFound);
+                    return ResponseEntity.ok().body(updated);
                 })
                 .orElse(ResponseEntity.badRequest().build());
 
