@@ -26,6 +26,7 @@ public class CourseMapper {
         }
         course.setName(courseDTO.name());
         course.setCategory(courseDTO.category());
+        course.setExclusionDate(null);
         return course;
     }
 }
