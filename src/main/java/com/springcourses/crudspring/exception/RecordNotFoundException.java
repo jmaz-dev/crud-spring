@@ -1,4 +1,4 @@
-package com.springcourses.exception;
+package com.springcourses.crudspring.exception;
 
 public class RecordNotFoundException extends RuntimeException {
 

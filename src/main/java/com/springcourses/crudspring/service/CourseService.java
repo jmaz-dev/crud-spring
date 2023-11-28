@@ -1,15 +1,16 @@
 package com.springcourses.crudspring.service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.springcourses.crudspring.dto.CourseDTO;
+import com.springcourses.crudspring.dto.mapper.CourseMapper;
+import com.springcourses.crudspring.exception.RecordNotFoundException;
 import com.springcourses.crudspring.model.Course;
 import com.springcourses.crudspring.repository.CourseRepository;
-import com.springcourses.exception.RecordNotFoundException;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -18,49 +19,51 @@ import jakarta.validation.constraints.Positive;
 @Service
 public class CourseService {
     private final CourseRepository courseRepository;
+    private final CourseMapper courseMapper;
 
-    public CourseService(CourseRepository courseRepository) {
+    public CourseService(CourseRepository courseRepository, CourseMapper courseMapper) {
 
         this.courseRepository = courseRepository;
+        this.courseMapper = courseMapper;
 
     }
 
-    public List<Course> list() {
+    public List<CourseDTO> list() {
 
-        List<Course> courses = courseRepository.findAll();
-
-        return courses.stream()
-                .filter(c -> c.getExclusionDate() == null)
+        return courseRepository.findAll()
+                .stream().map(courseMapper::toDTO)
                 .collect(Collectors.toList());
 
     }
 
-    public Course findById(@PathVariable("id") @NotNull @Positive Integer identificador) {
+    public CourseDTO findById(@PathVariable("id") @NotNull @Positive Integer identificador) {
 
-        return courseRepository.findById(identificador).orElseThrow(() -> new RecordNotFoundException(identificador));
-
-    }
-
-    public Course create(@Valid Course course) {
-
-        return courseRepository.save(course);
+        return courseRepository.findById(identificador).map(courseMapper::toDTO)
+                .orElseThrow(() -> new RecordNotFoundException(identificador));
 
     }
 
-    public Course edit(@Valid Course courseBody, Integer id) {
+    public CourseDTO create(@Valid @NotNull Course course) {
+
+        return courseMapper.toDTO(courseRepository.save(course));
+
+    }
+
+    public CourseDTO edit(@Valid Course courseBody, @NotNull Integer id) {
 
         return courseRepository.findById(id)
                 .map(recordFound -> {
                     recordFound.setCategory(courseBody.getCategory());
                     recordFound.setName(courseBody.getName());
-                    return courseRepository.save(recordFound);
+                    return courseMapper.toDTO(courseRepository.save(recordFound));
                 }).orElseThrow(() -> new RecordNotFoundException(id));
 
     }
 
     public void delete(Integer id) {
 
-        courseRepository.delete(courseRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id)));
+        courseRepository.delete(courseRepository.findById(id)
+                .orElseThrow(() -> new RecordNotFoundException(id)));
 
     }
 }

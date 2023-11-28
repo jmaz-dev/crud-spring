@@ -2,7 +2,6 @@ package com.springcourses.crudspring.controller;
 
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springcourses.crudspring.dto.CourseDTO;
 import com.springcourses.crudspring.model.Course;
 import com.springcourses.crudspring.service.CourseService;
 
@@ -33,28 +33,28 @@ public class CoursesController {
 
     // @RequestMapping(method = RequestMethod.GET)
     @GetMapping
-    public ResponseEntity<List<Course>> list() {
+    public ResponseEntity<List<CourseDTO>> list() {
 
         return ResponseEntity.ok().body(courseService.list());
 
     }
 
     @GetMapping("buscarPorId/{id}")
-    public Course findById(@PathVariable("id") Integer identificador) {
+    public CourseDTO findById(@PathVariable("id") Integer identificador) {
 
         return courseService.findById(identificador);
 
     }
 
     @PostMapping
-    public Course create(@RequestBody @NotNull @Valid Course course) {
+    public CourseDTO create(@RequestBody @NotNull @Valid Course course) {
 
         return courseService.create(course);
         // System.out.println(course.getId()) //console.log
     }
 
     @PutMapping("edit/{id}")
-    public Course edit(@RequestBody @Valid Course courseBody,
+    public CourseDTO edit(@RequestBody @Valid Course courseBody,
             @PathVariable @NotNull @Positive Integer id) {
 
         return courseService.edit(courseBody, id);

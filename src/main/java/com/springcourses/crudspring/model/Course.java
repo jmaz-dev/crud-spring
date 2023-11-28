@@ -3,6 +3,7 @@ package com.springcourses.crudspring.model;
 import java.sql.Timestamp;
 
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -24,6 +25,7 @@ import lombok.Data;
 @Entity
 @Table(name = "cursos")
 @SQLDelete(sql = "UPDATE cursos SET data_de_exclusao = CURRENT_DATE WHERE id = ?")
+@Where(clause = "data_de_exclusao = null")
 
 public class Course {
 
@@ -44,6 +46,7 @@ public class Course {
     @Column(name = "categoria", length = 10, nullable = false)
     private String category;
 
+    @Length(max = 20)
     @Column(name = "data_de_exclusao", length = 30, nullable = true)
     private Timestamp exclusionDate = null;
 
