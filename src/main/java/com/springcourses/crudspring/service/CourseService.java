@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.springcourses.crudspring.dto.CourseDTO;
 import com.springcourses.crudspring.dto.mapper.CourseMapper;
 import com.springcourses.crudspring.exception.RecordNotFoundException;
-import com.springcourses.crudspring.model.Course;
 import com.springcourses.crudspring.repository.CourseRepository;
 
 import jakarta.validation.Valid;
@@ -43,18 +42,18 @@ public class CourseService {
 
     }
 
-    public CourseDTO create(@Valid @NotNull Course course) {
+    public CourseDTO create(@Valid @NotNull CourseDTO course) {
 
-        return courseMapper.toDTO(courseRepository.save(course));
+        return courseMapper.toDTO(courseRepository.save(courseMapper.toEntity(course)));
 
     }
 
-    public CourseDTO edit(@Valid Course courseBody, @NotNull Integer id) {
+    public CourseDTO edit(@Valid CourseDTO courseBody, @NotNull Integer id) {
 
         return courseRepository.findById(id)
                 .map(recordFound -> {
-                    recordFound.setCategory(courseBody.getCategory());
-                    recordFound.setName(courseBody.getName());
+                    recordFound.setCategory(courseBody.category());
+                    recordFound.setName(courseBody.name());
                     return courseMapper.toDTO(courseRepository.save(recordFound));
                 }).orElseThrow(() -> new RecordNotFoundException(id));
 
@@ -62,8 +61,7 @@ public class CourseService {
 
     public void delete(Integer id) {
 
-        courseRepository.delete(courseRepository.findById(id)
-                .orElseThrow(() -> new RecordNotFoundException(id)));
+        courseRepository.delete(courseRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id)));
 
     }
 }

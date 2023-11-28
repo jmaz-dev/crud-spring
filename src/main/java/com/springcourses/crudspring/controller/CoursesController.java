@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springcourses.crudspring.dto.CourseDTO;
-import com.springcourses.crudspring.model.Course;
 import com.springcourses.crudspring.service.CourseService;
 
 import jakarta.validation.Valid;
@@ -47,14 +46,14 @@ public class CoursesController {
     }
 
     @PostMapping
-    public CourseDTO create(@RequestBody @NotNull @Valid Course course) {
+    public CourseDTO create(@RequestBody @NotNull @Valid CourseDTO course) {
 
         return courseService.create(course);
         // System.out.println(course.getId()) //console.log
     }
 
     @PutMapping("edit/{id}")
-    public CourseDTO edit(@RequestBody @Valid Course courseBody,
+    public CourseDTO edit(@RequestBody @Valid CourseDTO courseBody,
             @PathVariable @NotNull @Positive Integer id) {
 
         return courseService.edit(courseBody, id);
