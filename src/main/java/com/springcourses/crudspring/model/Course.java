@@ -31,7 +31,6 @@ import lombok.Data;
 @Entity
 @Table(name = "cursos")
 @SQLDelete(sql = "UPDATE cursos SET data_de_exclusao = CURRENT_DATE WHERE id = ?")
-@Where(clause = "data_de_exclusao = null")
 
 public class Course {
 

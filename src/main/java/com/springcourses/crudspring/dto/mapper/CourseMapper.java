@@ -1,8 +1,12 @@
 package com.springcourses.crudspring.dto.mapper;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Component;
 
 import com.springcourses.crudspring.dto.CourseDTO;
+import com.springcourses.crudspring.dto.LessonDTO;
 import com.springcourses.crudspring.enums.Category;
 import com.springcourses.crudspring.model.Course;
 
@@ -14,11 +18,16 @@ public class CourseMapper {
             return null;
 
         }
+        List<LessonDTO> lessons = course.getLessons()
+                .stream()
+                .map(lesson -> new LessonDTO(lesson.getId(), lesson.getName(), lesson.getLink()))
+                .collect(Collectors.toList());
+
         return new CourseDTO(
                 course.getId(),
                 course.getName(),
                 course.getCategory().getValue(),
-                course.getLessons());
+                lessons);
     }
 
     public Course toEntity(CourseDTO courseDTO) {
@@ -44,6 +53,10 @@ public class CourseMapper {
             case "Front-end" -> Category.FRONTEND;
 
             case "Back-end" -> Category.BACKEND;
+
+            case "0" -> Category.BACKEND;
+
+            case "1" -> Category.FRONTEND;
 
             default -> throw new IllegalArgumentException("Categoria inválida" + value);
         };
