@@ -9,6 +9,7 @@ import com.springcourses.crudspring.dto.CourseDTO;
 import com.springcourses.crudspring.dto.LessonDTO;
 import com.springcourses.crudspring.enums.Category;
 import com.springcourses.crudspring.model.Course;
+import com.springcourses.crudspring.model.Lesson;
 
 @Component
 public class CourseMapper {
@@ -31,16 +32,31 @@ public class CourseMapper {
     }
 
     public Course toEntity(CourseDTO courseDTO) {
+        Course course = new Course();
+
         if (courseDTO == null) {
             return null;
         }
 
-        Course course = new Course();
         if (courseDTO.id() != null) {
             course.setId(courseDTO.id());
         }
+
+        List<Lesson> lessons = courseDTO.lessons().stream().map(lessonDTO -> {
+            Lesson lesson = new Lesson();
+            lesson.setId(lessonDTO.id());
+            lesson.setName(lessonDTO.name());
+            lesson.setLink(lessonDTO.link());
+
+            lesson.setCourse(course);
+
+            return lesson;
+        }).collect(Collectors.toList());
+
         course.setName(courseDTO.name());
         course.setCategory(convertCategoryValue(courseDTO.category()));
+        course.setLessons(lessons);
+
         return course;
     }
 
