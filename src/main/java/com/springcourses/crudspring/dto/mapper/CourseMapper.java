@@ -70,9 +70,17 @@ public class CourseMapper {
 
             case "Back-end" -> Category.BACKEND;
 
+            case "Full-stack" -> Category.FULLSTACK;
+
+            case "Mobile" -> Category.MOBILE;
+
             case "0" -> Category.BACKEND;
 
             case "1" -> Category.FRONTEND;
+
+            case "2" -> Category.FULLSTACK;
+
+            case "3" -> Category.MOBILE;
 
             default -> throw new IllegalArgumentException("Categoria inválida" + value);
         };

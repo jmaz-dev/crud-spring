@@ -30,7 +30,7 @@ public class CrudSpringApplication {
 
 			Course c = new Course();
 			c.setName("Angular com spring");
-			c.setCategory(Category.BACKEND);
+			c.setCategory(Category.FULLSTACK);
 
 			Lesson l1 = new Lesson();
 			l1.setName("Introdução");
@@ -38,7 +38,7 @@ public class CrudSpringApplication {
 			l1.setCourse(c);
 
 			Lesson l2 = new Lesson();
-			l2.setName("Aula 2");
+			l2.setName("Aulas 2");
 			l2.setLink("watch?v=2");
 			l2.setCourse(c);
 

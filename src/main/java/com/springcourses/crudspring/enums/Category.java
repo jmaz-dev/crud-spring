@@ -1,7 +1,7 @@
 package com.springcourses.crudspring.enums;
 
 public enum Category {
-    BACKEND("Back-end"), FRONTEND("Front-end");
+    BACKEND("Back-end"), FRONTEND("Front-end"), FULLSTACK("Full-stack"), MOBILE("Mobile");
 
     private String value;
 
