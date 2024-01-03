@@ -16,7 +16,6 @@ import com.springcourses.crudspring.service.CourseService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.AllArgsConstructor;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -25,10 +24,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @Validated
 @RequestMapping("/api/courses")
-@AllArgsConstructor
 public class CoursesController {
 
     private final CourseService courseService;
+
+    public CoursesController(CourseService courseService) {
+        this.courseService = courseService;
+    }
 
     // @RequestMapping(method = RequestMethod.GET)
     @GetMapping
